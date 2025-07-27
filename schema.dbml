@@ -1,0 +1,65 @@
+Project ecom_REST_API {
+  database_type: 'PostgreSQL'
+  Note: 'Codecademy project - REST API'
+}
+
+Table customers {
+  id int [primary key]
+  username varchar [not null, unique]
+  first_name varchar [not null]
+  last_name varchar [not null]
+  email varchar [not null, unique]
+  phone varchar
+  address text
+  Note: 'Stores customers'
+}
+
+Table products {
+  id int [primary key]
+  title varchar
+  description text
+  price decimal // in USD
+  supplier_id int [ref: > suppliers.id, not null]
+  Note: 'Stores products'
+}
+
+Table suppliers {
+  id int [primary key]
+  title varchar  [not null, unique]
+  address text
+  email varchar [not null, unique]
+  phone varchar [not null, unique]
+  Note: 'Stores suppliers'
+}
+
+Table orders {
+  id int [primary key]
+  customer_id int [ref: > customers.id, not null]
+  order_time timestamp [not null]
+  paid boolean [not null]
+  Note: 'Stores orders'
+}
+
+Table order_items {
+  order_id int [ref: - orders.id, not null]
+  product_id int [ref: - products.id, not null]
+  quantity int [not null]
+  shipment_id int [ref: - shipments.id, not null]
+  Note: 'This table uses a composite primary key on (order_id, product_id)'
+  Indexes {
+    (order_id, product_id) [pk]
+  }
+}
+
+Table shipments {
+  id int [primary key]
+  carrier varchar
+  tracking_number varchar [unique]
+  status varchar [not null, default: 'pending']
+  shipped_at timestamp
+  delivered_at timestamp
+  estimated_delivery timestamp
+  shipping_address text
+  shipping_method varchar
+  cost decimal
+}

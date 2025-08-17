@@ -81,3 +81,10 @@ Table shipments {
   shipping_method varchar
   cost decimal
 }
+
+Table passwords {
+  customer_id int [ref: > customers.id, not null, unique]
+  password_hash varchar [not null]
+  created_at timestamp [default: now()]
+  updated_at timestamp
+}

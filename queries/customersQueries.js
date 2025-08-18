@@ -20,14 +20,15 @@ const getCustomerById = (request, response) => {
   })
 }
 
-const createCustomer = (request, response) => {
+const createCustomer = (request, response, next) => {
   const {
     username,
     first_name,
     last_name,
     email,
     phone,
-    address
+    address,
+    hashed_password
     } = request.body;
 
   pool.query('INSERT INTO customers (username, first_name, last_name, email, phone, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
@@ -35,8 +36,9 @@ const createCustomer = (request, response) => {
     if (error) {
       return response.status(500).json({ error: error.message });
     }
-    response.send(results.rows);
+    // response.send(results.rows);
   })
+  next();
 }
 
 const updateCustomer = (request, response) => {
@@ -66,6 +68,15 @@ const deleteCustomer = (request, response) => {
   const id = parseInt(request.params.id)
 
   pool.query('DELETE FROM customers WHERE id = $1 RETURNING *', [id], (error, results) => {
+    if (error) { 
+      return response.status(500).json({ error: error.message });
+    }
+    response.send(results.rows);
+  })
+}
+
+const findByUsername = (request, response) => {
+  pool.query('SELECT * FROM customers WHERE username = $1', [request.username], (error, results) => {
     if (error) {
       return response.status(500).json({ error: error.message });
     }

@@ -1,6 +1,8 @@
 const express = require('express');
 const ordersRouter = express.Router();
 
+// import orderItemsRouter
+const orderItemsRouter = require('./orderItemsRouter');
 // import orders queries
 const ordersQueries = require('../queries/ordersQueries');
 // ORDERS TABLE
@@ -14,6 +16,8 @@ ordersRouter.post('/', ordersQueries.createOrder);
 ordersRouter.put('/:id', ordersQueries.updateOrder);
 // delete an order
 ordersRouter.delete('/:id', ordersQueries.deleteOrder);
+// use orderItemsRouter
+ordersRouter.use('/:id/items', orderItemsRouter);
 
 
 module.exports = ordersRouter;

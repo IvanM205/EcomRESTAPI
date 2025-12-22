@@ -1,6 +1,8 @@
 const express = require('express');
 const cartsRouter = express.Router();
 
+// import cartItemsRouter
+const cartItemsRouter = require('./cartItemsRouter');
 // import carts queries
 const cartsQueries = require('../queries/cartsQueries');
 
@@ -15,6 +17,8 @@ cartsRouter.post('/', cartsQueries.createCart);
 cartsRouter.put('/:id', cartsQueries.updateCart);
 // delete a cart
 cartsRouter.delete('/:id', cartsQueries.deleteCart);
+// use cartItemsRouter
+cartsRouter.use('/:id/items', cartItemsRouter);
 
 
 module.exports = cartsRouter;

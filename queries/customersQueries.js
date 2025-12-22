@@ -1,16 +1,16 @@
 const pool = require('./db');
 
-const getCustomers = (request, response) => {
-  pool.query('SELECT * FROM customers ORDER BY id ASC', (error, results) => {
-    if (error) {
-      return response.status(500).json({ error: error.message });
-    }
-    response.send(results.rows);
-  })
-}
+// const getCustomers = (request, response) => {
+//   pool.query('SELECT * FROM customers ORDER BY id ASC', (error, results) => {
+//     if (error) {
+//       return response.status(500).json({ error: error.message });
+//     }
+//     response.send(results.rows);
+//   })
+// }
 
 const getCustomerById = (request, response) => {
-  const id = parseInt(request.params.id)
+  const id = request.session.customer.id;
 
   pool.query('SELECT * FROM customers WHERE id = $1', [id], (error, results) => {
     if (error) {
@@ -42,7 +42,7 @@ const createCustomer = (request, response, next) => {
 }
 
 const updateCustomer = (request, response) => {
-  const id = parseInt(request.params.id)
+  const id = request.session.customer.id;
   const {
     username,
     first_name,
@@ -65,7 +65,7 @@ const updateCustomer = (request, response) => {
 }
 
 const deleteCustomer = (request, response) => {
-  const id = parseInt(request.params.id)
+  const id = request.session.customer.id;
 
   pool.query('DELETE FROM customers WHERE id = $1 RETURNING *', [id], (error, results) => {
     if (error) { 
@@ -75,19 +75,18 @@ const deleteCustomer = (request, response) => {
   })
 }
 
-const findByUsername = (request, response) => {
-  pool.query('SELECT * FROM customers WHERE username = $1', [request.username], (error, results) => {
-    if (error) {
-      return response.status(500).json({ error: error.message });
-    }
-    response.send(results.rows);
-  })
-}
+// const findByUsername = (request, response) => {
+//   pool.query('SELECT * FROM customers WHERE username = $1', [request.username], (error, results) => {
+//     if (error) {
+//       return response.status(500).json({ error: error.message });
+//     }
+//     response.send(results.rows);
+//   })
+// }
 
 module.exports = {
-  getCustomers,
   getCustomerById,
-  createCustomer,
   updateCustomer,
-  deleteCustomer
+  deleteCustomer,
+  createCustomer,
 }

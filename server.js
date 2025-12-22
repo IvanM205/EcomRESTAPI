@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/customers', ensureAuthentication, customersRouter);
-app.use('/products', ensureAuthentication, productsRouter);
+app.use('/products', productsRouter);
 app.use('/carts', ensureAuthentication, cartsRouter);
 app.use('/orders', ensureAuthentication, ordersRouter);
 app.use('/auth', authRouter);

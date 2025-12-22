@@ -5,16 +5,12 @@ const customersRouter = express.Router();
 const customersQueries = require('../queries/customersQueries');
 
 // CUSTOMERS TABLE
-// get all customers
-customersRouter.get('/', customersQueries.getCustomers);
-// get a customer by id
-customersRouter.get('/:id', customersQueries.getCustomerById);
-// add a customer 
-customersRouter.post('/', customersQueries.createCustomer);
+// get a self customer data
+customersRouter.get('/', customersQueries.getCustomerById);
 // update a customer
-customersRouter.put('/:id', customersQueries.updateCustomer);
+customersRouter.put('/', customersQueries.updateCustomer);
 // delete a customer
-customersRouter.delete('/:id', customersQueries.deleteCustomer);
+//customersRouter.delete('/', customersQueries.deleteCustomer);
 
 
 module.exports = customersRouter;

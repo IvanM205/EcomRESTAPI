@@ -43,11 +43,12 @@ const createPassHash = async (request, response) => {
     response.status(201).json(
       {
         success: true,
-        msg: 'User registrated succesfullz',
+        msg: 'User registrated succesfully',
         user: 
           {
             username,
-            email
+            email,
+            updated_at: results.rows[0].updated_at
           }
       });
   } catch (error) {
@@ -105,6 +106,7 @@ const requestLogin = async (request, response, next) => {
     request.session.customer = {
         username,
         password,
+        id: request.customer.id
     };
       response.send(`Customer ${request.session.customer.username} has loged in sucessfully!`);
   });
